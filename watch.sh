@@ -13,8 +13,10 @@ NORMAL=$(tput sgr0)
 
 # Get the directory this script itself is located in.
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-DEFAULT_TARGET_DIR="src/ExternalVocab"
+DEFAULT_TARGET_DIR="src/LitVocab"
 TARGET_DIR="${PWD}/${DEFAULT_TARGET_DIR}"
+BINARY_DIR="/Bin"
+VOCAB_DIR="/Vocab"
 REPO_DIR=""
 GENERATED_DIR="${TARGET_DIR}/Generated"
 
@@ -52,4 +54,4 @@ fi
 
 #run_command "${SCRIPT_DIR}/fetchLag.sh"
 
-node ${TARGET_DIR}/lit-artifact-generator/index.js watch --vocabListFile ${TARGET_DIR}/${REPO_DIR}/**/*.yml --outputDirectory ${GENERATED_DIR}
+node ${TARGET_DIR}${BINARY_DIR}/lit-artifact-generator/index.js watch --vocabListFile ${TARGET_DIR}${VOCAB_DIR}/${REPO_DIR}/**/*.yml --outputDirectory ${GENERATED_DIR}
