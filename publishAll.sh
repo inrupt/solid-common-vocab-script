@@ -20,12 +20,12 @@ LAG_DIR="${SCRIPT_DIR}/../bin"
 # Default vocabulary configuration root directory (e.g. from which we expect to
 # crawl recursively for YAMLs that bundle multiple RDF vocabularies) is in a
 # sibling directory of this script's directory.
-VOCAB_CONFIG_DIR="${SCRIPT_DIR}/../vocab"
+VOCAB_CONFIG_DIR="${SCRIPT_DIR}"
 
 # This default target directory is assuming we are running this script from
 # within an application from which we've been making local updates to RDF
 # vocabularies that we've cloned into the same place.
-DEFAULT_TARGET_DIR="src/ExternalVocab"
+DEFAULT_TARGET_DIR="src/LitVocab"
 TARGET_DIR="${PWD}/${DEFAULT_TARGET_DIR}"
 
 PUBLISH_LOCAL=false

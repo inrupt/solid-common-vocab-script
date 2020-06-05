@@ -14,8 +14,10 @@ NORMAL=$(tput sgr0)
 # Get the directory this script itself is located in.
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 STARTING_DIR="${PWD}"
-DEFAULT_TARGET_DIR="src/ExternalVocab"
+DEFAULT_TARGET_DIR="src/LitVocab"
 TARGET_DIR="${PWD}/${DEFAULT_TARGET_DIR}"
+BINARY_DIR="/Bin"
+VOCAB_DIR="/Vocab"
 PROGRAMMING_LANGUAGE=JavaScript
 
 source ${SCRIPT_DIR}/run_command.sh
@@ -89,14 +91,14 @@ fi
 if [ ${VOCAB_LOCAL} == true ]
 then
     printf "\n${GREEN}Fetching LIT Artifact Generator into directory [${TARGET_DIR}]...${NORMAL}\n"
-    run_command "${SCRIPT_DIR}/fetchLag.sh -t ${TARGET_DIR}"
+    run_command "${SCRIPT_DIR}/fetchLag.sh -t ${TARGET_DIR}${BINARY_DIR}"
 
-    printf "\n${GREEN}Fetching vocabulary repository [${GIT_REPO_URL}] into directory [${TARGET_DIR}]...${NORMAL}\n"
-    run_command "${SCRIPT_DIR}/fetchVocabRepo.sh -r ${GIT_REPO_URL} -t ${TARGET_DIR}"
+    printf "\n${GREEN}Fetching vocabulary repository [${GIT_REPO_URL}] into directory [${TARGET_DIR}${VOCAB_DIR}]...${NORMAL}\n"
+    run_command "${SCRIPT_DIR}/fetchVocabRepo.sh -r ${GIT_REPO_URL} -t ${TARGET_DIR}${VOCAB_DIR}"
 
 
     REPO_DIR="$(echo ${GIT_REPO_URL} | sed 's/^.*\///' | sed 's/\..*$//')"
-    FULL_REPO_DIR="${TARGET_DIR}/${REPO_DIR}"
+    FULL_REPO_DIR="${TARGET_DIR}${VOCAB_DIR}/${REPO_DIR}"
 
     # Generate inside each local vocab repo (as we expect vocab repos to
     # .gitignore generated code)...
@@ -120,7 +122,7 @@ then
 #    node <PATH TO LAG>/index.js \
 
     # If the LAG was cloned locally, you can just use this:
-    node ${TARGET_DIR}/lit-artifact-generator/index.js \
+    node ${TARGET_DIR}${BINARY_DIR}/lit-artifact-generator/index.js \
       generate \
       --outputDirectory "${GENERATED_DIR}" \
       --vocabListFile "${FULL_REPO_DIR}/**/*.yml" \
@@ -146,13 +148,13 @@ then
     if [ ! -d "${WATCH_REPO_SCRIPT_FILE}" ]
     then
         printf "\n${GREEN}Creating simple script [${WATCH_REPO_SCRIPT_FILE}] to re-run watching this local vocabulary repository.${NORMAL}\n"
-        echo "${SCRIPT_DIR}/watch.sh -t ${TARGET_DIR} -r ${REPO_DIR} -g ${GENERATED_DIR}" > ${WATCH_REPO_SCRIPT_FILE}
+        echo "${SCRIPT_DIR}/watch.sh -t ${TARGET_DIR}${VOCAB_DIR} -r ${REPO_DIR} -g ${GENERATED_DIR}" > ${WATCH_REPO_SCRIPT_FILE}
         run_command "chmod +x ${WATCH_REPO_SCRIPT_FILE}"
     fi
 
     # We watch all YAMLs under a given root, and update the generated code
     # in our target directory accordingly.
-    printf "\n${GREEN}Watching vocabulary bundles under directory [${TARGET_DIR}/${REPO_DIR}], generating to [${GENERATED_DIR}]...${NORMAL}\n"
+    printf "\n${GREEN}Watching vocabulary bundles under directory [${TARGET_DIR}${VOCAB_DIR}/${REPO_DIR}], generating to [${GENERATED_DIR}]...${NORMAL}\n"
     run_command "${SCRIPT_DIR}/watch.sh -t ${TARGET_DIR} -r ${REPO_DIR} -g ${GENERATED_DIR}"
     # The watch script really just runs this:
     #   node ${TARGET_DIR}/lit-artifact-generator/index.js watch --vocabListFile ${TARGET_DIR}/${REPO_DIR}/**/*.yml --outputDirectory ${GENERATED_DIR}

@@ -14,7 +14,7 @@ NORMAL=$(tput sgr0)
 # Get the directory this script itself is located in.
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 # Default directory to target is a sibling directory of where this script is.
-TARGET_DIR="${SCRIPT_DIR}/../vocab"
+TARGET_DIR="${PWD}"
 
 helpFunction() {
     printf "${BLUE}Usage: $0 [ -t <TargetDirectory> ] [ -a <LAG versions> | -b <Java-LVT versions> | -c <JavaScript_LVT versions> | -d <Generated Java versions> | -e <Generated JavaScript versions> ]\n"
@@ -49,7 +49,11 @@ then
 fi
 
 # Print help in case parameters are empty, but display everything.
-if [ "${1:-}" == "" ]
+if [ "${litArtifactGenerator:-}" == "" ] \
+  && [ "${litVocabTermJava:-}" == "" ] \
+  && [ "${litVocabTermJavaScript:-}" == "" ] \
+  && [ "${artifactJava:-}" == "" ] \
+  && [ "${artifactJavaScript:-}" == "" ]
 then
     echo "${RED}No specific options - displaying all!${NORMAL}";
     helpFunction
@@ -60,6 +64,8 @@ then
     litVocabTermJavaScript=true;
     artifactJavaScript=true;
 fi
+
+printf "${BLUE}Displaying versions from YAML files found within target directory: [${TARGET_DIR}]${NORMAL}\n\n"
 
 if [ "${litArtifactGenerator:-}" ]
 then
