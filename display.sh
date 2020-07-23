@@ -25,8 +25,8 @@ helpFunction() {
     printf "${BLUE}Options:${NORMAL}\n"
     printf "\t-t ${YELLOW}Optional: ${BLUE}Target directory (default is: [${TARGET_DIR}])${NORMAL}\n"
     printf "\t-a ${BLUE}LIT Artifact Generator versions${NORMAL}\n"
-    printf "\t-b ${BLUE}LIT Vocab Term Java versions${NORMAL}\n"
-    printf "\t-c ${BLUE}LIT Vocab Term JavaScript versions${NORMAL}\n"
+    printf "\t-b ${BLUE}Solid Common Vocab Java versions${NORMAL}\n"
+    printf "\t-c ${BLUE}Solid Common Vocab JavaScript versions${NORMAL}\n"
     printf "\t-d ${BLUE}Generated Java JAR versions${NORMAL}\n"
     printf "\t-e ${BLUE}Generated JavaScript NPM versions${NORMAL}\n\n"
 }
@@ -82,19 +82,19 @@ fi
 
 if [ "${litVocabTermJava:-}" ]
 then
-    # Java LIT Vocab Term versions.
-    command="grep -r \"litVocabTermVersion:\s*[0-9]\" ${TARGET_DIR} --include=${INCLUDE_MASK} --exclude-dir={${EXCLUDE_DIR}}"
-    printf "${RED}b) Java LIT Vocab Term versions:${NORMAL}\n"
-    echo $command | bash | sed 's/\s*litVocabTermVersion: //' | column -s ':' -t
+    # Java Solid Common Vocab versions.
+    command="grep -r \"solidCommonVocabVersion:\s*[0-9]\" ${TARGET_DIR} --include=${INCLUDE_MASK} --exclude-dir={${EXCLUDE_DIR}}"
+    printf "${RED}b) Java Solid Common Vocab versions:${NORMAL}\n"
+    echo $command | bash | sed 's/\s*solidCommonVocabVersion: //' | column -s ':' -t
     echo ""
 fi
 
 if [ "${litVocabTermJavaScript:-}" ]
 then
-    # JavaScript LIT Vocab Term versions.
-    command="grep -r \"litVocabTermVersion:\s*\\\"\^\" ${TARGET_DIR} --include=${INCLUDE_MASK} --exclude-dir={${EXCLUDE_DIR}}"
-    printf "${RED}c) JavaScript LIT Vocab Term versions:${NORMAL}\n"
-    echo $command | bash | sed 's/\s*litVocabTermVersion: //' | column -s ':' -t
+    # JavaScript Solid Common Vocab versions.
+    command="grep -r \"solidCommonVocabVersion:\s*\\\"\^\" ${TARGET_DIR} --include=${INCLUDE_MASK} --exclude-dir={${EXCLUDE_DIR}}"
+    printf "${RED}c) JavaScript Solid Common Vocab versions:${NORMAL}\n"
+    echo $command | bash | sed 's/\s*solidCommonVocabVersion: //' | column -s ':' -t
     echo ""
 fi
 
