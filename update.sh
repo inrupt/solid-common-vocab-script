@@ -23,8 +23,8 @@ helpFunction()
     printf "${BLUE}Options:${NORMAL}\n"
     printf "\t-t ${YELLOW}Optional: ${BLUE}Target directory (default is: [${TARGET_DIR}])${NORMAL}\n"
     printf "\t-a ${BLUE}LIT Artifact Generator versions${NORMAL}\n"
-    printf "\t-b ${BLUE}LIT Vocab Term Java versions${NORMAL}\n"
-    printf "\t-c ${BLUE}LIT Vocab Term JavaScript versions${NORMAL}\n"
+    printf "\t-b ${BLUE}Solid Common Vocab Java versions${NORMAL}\n"
+    printf "\t-c ${BLUE}Solid Common Vocab JavaScript versions${NORMAL}\n"
     printf "\t-d ${BLUE}Generated Java JAR versions${NORMAL}\n"
     printf "\t-e ${BLUE}Generated JavaScript NPM versions${NORMAL}\n\n"
     exit 1 # Exit script after printing help
@@ -67,16 +67,16 @@ fi
 
 if [ "${versionLitVocabTermJava:-}" ]
 then
-    # Java LIT Vocab Term versions.
-    printf "\n${RED}b) Updating Java LIT Vocab Term to version: [$versionLitVocabTermJava]...${NORMAL}\n"
-    find ${TARGET_DIR} -type f \( -name '*.yml' -o -name '*.yaml' \) -not -path "*/bin/*" -not -path "*/Generated/*" -not -path "*/.github/*" -print0 | xargs -0 sed --in-place "s/litVocabTermVersion:\s*[0-9].*/litVocabTermVersion: $versionLitVocabTermJava/"
+    # Java Solid Common Vocab versions.
+    printf "\n${RED}b) Updating Java Solid Common Vocab to version: [$versionLitVocabTermJava]...${NORMAL}\n"
+    find ${TARGET_DIR} -type f \( -name '*.yml' -o -name '*.yaml' \) -not -path "*/bin/*" -not -path "*/Generated/*" -not -path "*/.github/*" -print0 | xargs -0 sed --in-place "s/solidCommonVocabVersion:\s*[0-9].*/solidCommonVocabVersion: $versionLitVocabTermJava/"
 fi
 
 if [ "${versionLitVocabTermJavaScript:-}" ]
 then
-    # JavaScript LIT Vocab Term versions.
-    printf "\n${RED}c) Updating JavaScript LIT Vocab Term to version: [$versionLitVocabTermJavaScript]...${NORMAL}\n"
-    find ${TARGET_DIR} -type f \( -name '*.yml' -o -name '*.yaml' \) -not -path "*/bin/*" -not -path "*/Generated/*" -not -path "*/.github/*" -print0 | xargs -0 sed --in-place "s/litVocabTermVersion:\s*\\\"\^.*/litVocabTermVersion: \\\"\^$versionLitVocabTermJavaScript\"/"
+    # JavaScript Solid Common Vocab versions.
+    printf "\n${RED}c) Updating JavaScript Solid Common Vocab to version: [$versionLitVocabTermJavaScript]...${NORMAL}\n"
+    find ${TARGET_DIR} -type f \( -name '*.yml' -o -name '*.yaml' \) -not -path "*/bin/*" -not -path "*/Generated/*" -not -path "*/.github/*" -print0 | xargs -0 sed --in-place "s/solidCommonVocabVersion:\s*\\\"\^.*/solidCommonVocabVersion: \\\"\^$versionLitVocabTermJavaScript\"/"
 fi
 
 if [ "${versionArtifactJava:-}" ]
