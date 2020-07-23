@@ -13,14 +13,14 @@ NORMAL=$(tput sgr0)
 
 # Get the directory this script itself is located in.
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+source ${SCRIPT_DIR}/run_command.sh
+
 STARTING_DIR="${PWD}"
 DEFAULT_TARGET_DIR="src/LitVocab"
 TARGET_DIR="${PWD}/${DEFAULT_TARGET_DIR}"
 BINARY_DIR="/Bin"
 VOCAB_DIR="/Vocab"
 PROGRAMMING_LANGUAGE=JavaScript
-
-source ${SCRIPT_DIR}/run_command.sh
 
 VOCAB_LOCAL=false
 VOCAB_REMOTE=false

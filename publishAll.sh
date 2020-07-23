@@ -13,6 +13,8 @@ NORMAL=$(tput sgr0)
 
 # Get the directory this script itself is located in.
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+source ${SCRIPT_DIR}/run_command.sh
+
 
 # Default LAG directory is in a sibling directory of this script's directory.
 LAG_DIR="${SCRIPT_DIR}/../bin"
@@ -28,6 +30,9 @@ VOCAB_CONFIG_DIR="${SCRIPT_DIR}"
 DEFAULT_TARGET_DIR="src/LitVocab"
 TARGET_DIR="${PWD}/${DEFAULT_TARGET_DIR}"
 
+# The One-Time-Password value to use for NPM (to satisfy 2FA)
+NPM_OTP_VALUE="NONE"
+
 PUBLISH_LOCAL=false
 PUBLISH_REMOTE=false
 
@@ -38,15 +43,18 @@ helpFunction() {
     printf "\t-t ${YELLOW}Optional: ${BLUE}Target directory (default is: [${TARGET_DIR}])${NORMAL}\n"
     printf "\t-g ${YELLOW}Optional: ${BLUE}LIT Artifact Generator directory (default is: [${LAG_DIR}])${NORMAL}\n"
     printf "\t-v ${YELLOW}Optional: ${BLUE}Root directory to search for LAG YAML files (default is: [${VOCAB_CONFIG_DIR}])${NORMAL}\n"
+    printf "\t-o ${YELLOW}Optional: ${BLUE}The One-Time-Password value to use for NPM (to satisfy 2FA) (default is: [${NPM_OTP_VALUE}])${NORMAL}\n"
     printf "\t-l ${BLUE}Publish locally${NORMAL}\n"
     printf "\t-r ${BLUE}Publish remotely${NORMAL}\n\n"
 }
 
-while getopts ":t:g:lr" opt
+while getopts ":t:g:v:o:lr" opt
 do
     case "$opt" in
       t ) TARGET_DIR="$OPTARG" ;;
       g ) LAG_DIR="$OPTARG" ;;
+      v ) VOCAB_CONFIG_DIR="$OPTARG" ;;
+      o ) NPM_OTP_VALUE="$OPTARG" ;;
       l ) PUBLISH_LOCAL=true ;;
       r ) PUBLISH_REMOTE=true ;;
       ? ) helpFunction ;; # Print help in case parameter is non-existent
@@ -72,9 +80,17 @@ ${SCRIPT_DIR}/fetchLag.sh -t ${LAG_DIR}
 if [ "${PUBLISH_LOCAL}" == true ]
 then
     printf "\n${BLUE}Executing the LIT Artifact Generator to re-generate and re-publish ${RED}(LOCALLY)${BLUE} artifacts from all YAML files found from [${SCRIPT_DIR}].${NORMAL}\n"
-    node ${LAG_DIR}/lit-artifact-generator/index.js generate --vocabListFile ${VOCAB_CONFIG_DIR}/**/*.yml --outputDirectory ${TARGET_DIR}/Generated --force --noprompt --publish [ "localMaven", "localNpmNode" ]
+    run_command "node ${LAG_DIR}/lit-artifact-generator/index.js generate --vocabListFile ${VOCAB_CONFIG_DIR}/**/*.yml --vocabListFileIgnore ${VOCAB_CONFIG_DIR}/bin/**/*.yml --outputDirectory ${TARGET_DIR}/Generated --force --clearOutputDirectory --noprompt --publish [ \"mavenLocal\", \"npmLocal\" ]"
 else
+    if [ "${NPM_OTP_VALUE}" != "NONE" ]
+    then
+        printf "\n${BLUE}Setting NPM OTP value to [${RED}${NPM_OTP_VALUE}${BLUE}].${NORMAL}\n"
+
+        find ${TARGET_DIR} -type f \( -name '*.yml' -o -name '*.yaml' \) -not -path "*/bin/*" -not -path "*/Generated/*" -not -path "*/.github/*" -print0 | xargs -0 sed --in-place "s/ --otp=[0-9]\+/ --otp=${NPM_OTP_VALUE}/g"
+    fi
+
     printf "\n${BLUE}Executing the LIT Artifact Generator to re-generate and re-publish ${RED}(REMOTELY)${BLUE} artifacts from all YAML files found from [${SCRIPT_DIR}].${NORMAL}\n"
-#    node ${LAG_DIR}/lit-artifact-generator/index.js generate --force --vocabListFile ${VOCAB_CONFIG_DIR}/**/*.yml --vocabListFileIgnore "${SCRIPT_DIR}/${TARGET_DIR}/lit-artifact-generator/**" --outputDirectory ${TARGET_DIR}/Generated --noprompt --publish [ "npm" ]
-    node ${LAG_DIR}/lit-artifact-generator/index.js generate --vocabListFile ${VOCAB_CONFIG_DIR}/**/*.yml --outputDirectory ${TARGET_DIR}/Generated --force --noprompt --publish [ "nexus", "npm" ]
+    run_command "node ${LAG_DIR}/lit-artifact-generator/index.js generate --vocabListFile ${VOCAB_CONFIG_DIR}/**/*.yml --vocabListFileIgnore ${VOCAB_CONFIG_DIR}/bin/**/*.yml --outputDirectory ${TARGET_DIR}/Generated --force --clearOutputDirectory--noprompt --publish [ \"nexus\", \"npmPublic\" ]"
+
+    printf "\n\n\n EXIT NOW!"
 fi

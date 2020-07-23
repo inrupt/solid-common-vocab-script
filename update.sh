@@ -62,35 +62,35 @@ then
     # LIT Artifact Generator versions.
     printf "\n${RED}a) Updating LIT Artifact Generator to version: [$versionLitArtifactGenerator]...${NORMAL}\n"
 #    sed --in-place "s/artifactGeneratorVersion:\s*.*/artifactGeneratorVersion: $versionLitArtifactGenerator/" **/*.yml
-    find ${TARGET_DIR} -type f \( -name '*.yml' -o -name '*.yaml' \) -not -path "*/Generated/*" -not -path "*/.github/*" -print0 | xargs -0 sed --in-place "s/artifactGeneratorVersion:\s*.*/artifactGeneratorVersion: $versionLitArtifactGenerator/"
+    find ${TARGET_DIR} -type f \( -name '*.yml' -o -name '*.yaml' \) -not -path "*/bin/*" -not -path "*/Generated/*" -not -path "*/.github/*" -print0 | xargs -0 sed --in-place "s/artifactGeneratorVersion:\s*.*/artifactGeneratorVersion: $versionLitArtifactGenerator/"
 fi
 
 if [ "${versionLitVocabTermJava:-}" ]
 then
     # Java LIT Vocab Term versions.
     printf "\n${RED}b) Updating Java LIT Vocab Term to version: [$versionLitVocabTermJava]...${NORMAL}\n"
-    find ${TARGET_DIR} -type f \( -name '*.yml' -o -name '*.yaml' \) -not -path "*/Generated/*" -not -path "*/.github/*" -print0 | xargs -0 sed --in-place "s/litVocabTermVersion:\s*[0-9].*/litVocabTermVersion: $versionLitVocabTermJava/"
+    find ${TARGET_DIR} -type f \( -name '*.yml' -o -name '*.yaml' \) -not -path "*/bin/*" -not -path "*/Generated/*" -not -path "*/.github/*" -print0 | xargs -0 sed --in-place "s/litVocabTermVersion:\s*[0-9].*/litVocabTermVersion: $versionLitVocabTermJava/"
 fi
 
 if [ "${versionLitVocabTermJavaScript:-}" ]
 then
     # JavaScript LIT Vocab Term versions.
     printf "\n${RED}c) Updating JavaScript LIT Vocab Term to version: [$versionLitVocabTermJavaScript]...${NORMAL}\n"
-    find ${TARGET_DIR} -type f \( -name '*.yml' -o -name '*.yaml' \) -not -path "*/Generated/*" -not -path "*/.github/*" -print0 | xargs -0 sed --in-place "s/litVocabTermVersion:\s*\\\"\^.*/litVocabTermVersion: \\\"\^$versionLitVocabTermJavaScript\"/"
+    find ${TARGET_DIR} -type f \( -name '*.yml' -o -name '*.yaml' \) -not -path "*/bin/*" -not -path "*/Generated/*" -not -path "*/.github/*" -print0 | xargs -0 sed --in-place "s/litVocabTermVersion:\s*\\\"\^.*/litVocabTermVersion: \\\"\^$versionLitVocabTermJavaScript\"/"
 fi
 
 if [ "${versionArtifactJava:-}" ]
 then
     # Java generated artifact versions.
     printf "\n${RED}d) Updating Java generated artifacts to version: [$versionArtifactJava]...${NORMAL}\n"
-    find ${TARGET_DIR} -type f \( -name '*.yml' -o -name '*.yaml' \) -not -path "*/Generated/*" -not -path "*/.github/*" -print0 | xargs -0 sed --in-place "s/artifactVersion:\s*[0-9].*/artifactVersion: $versionArtifactJava/"
+    find ${TARGET_DIR} -type f \( -name '*.yml' -o -name '*.yaml' \) -not -path "*/bin/*" -not -path "*/Generated/*" -not -path "*/.github/*" -print0 | xargs -0 sed --in-place "s/artifactVersion:\s*[0-9].*/artifactVersion: $versionArtifactJava/"
 fi
 
 if [ "${versionArtifactJavaScript:-}" ]
 then
     # JavaScript generated artifact versions.
     printf "\n${RED}e) Updating JavaScript generated artifacts to version: [$versionArtifactJavaScript]...${NORMAL}\n"
-    find ${TARGET_DIR} -type f \( -name '*.yml' -o -name '*.yaml' \) -not -path "*/Generated/*" -not -path "*/.github/*" -print0 | xargs -0 sed --in-place "s/artifactVersion:\s*\\\".*/artifactVersion: \\\"$versionArtifactJavaScript\"/"
+    find ${TARGET_DIR} -type f \( -name '*.yml' -o -name '*.yaml' \) -not -path "*/bin/*" -not -path "*/Generated/*" -not -path "*/.github/*" -print0 | xargs -0 sed --in-place "s/artifactVersion:\s*\\\".*/artifactVersion: \\\"$versionArtifactJavaScript\"/"
 fi
 
 printf "${GREEN}All YAML files updated!${NORMAL}\n\n"
