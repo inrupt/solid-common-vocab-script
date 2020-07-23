@@ -15,6 +15,8 @@ NORMAL=$(tput sgr0)
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 # Default directory to target is a sibling directory of where this script is.
 TARGET_DIR="${PWD}"
+INCLUDE_MASK="*.{yml,yaml}"
+EXCLUDE_DIR="bin,Generated,node_modules,.github"
 
 helpFunction() {
     printf "${BLUE}Usage: $0 [ -t <TargetDirectory> ] [ -a <LAG versions> | -b <Java-LVT versions> | -c <JavaScript_LVT versions> | -d <Generated Java versions> | -e <Generated JavaScript versions> ]\n"
@@ -72,7 +74,7 @@ then
     # LIT Artifact Generator.
     # Alternative is to use 'find' first, but grep can handle what we need.
     #  command="find . -type f \( -name '*.yml' -o -name '*.yaml' \) -not -path \"*/Generated/*\" -exec grep \"artifactGeneratorVersion:\" {} +"
-    command="grep -r \"artifactGeneratorVersion:\" ${TARGET_DIR} --include=*.{yml,yaml} --exclude-dir={Generated,node_modules,.github}"
+    command="grep -r \"artifactGeneratorVersion:\" ${TARGET_DIR} --include=${INCLUDE_MASK} --exclude-dir={${EXCLUDE_DIR}}"
     printf "${RED}a) LIT Artifact Generator versions:${NORMAL}\n"
     echo $command | bash | sed 's/\s*artifactGeneratorVersion: //' | column -s ':' -t
     echo ""
@@ -81,7 +83,7 @@ fi
 if [ "${litVocabTermJava:-}" ]
 then
     # Java LIT Vocab Term versions.
-    command="grep -r \"litVocabTermVersion:\s*[0-9]\" ${TARGET_DIR} --include=*.{yml,yaml} --exclude-dir={Generated,node_modules,.github}"
+    command="grep -r \"litVocabTermVersion:\s*[0-9]\" ${TARGET_DIR} --include=${INCLUDE_MASK} --exclude-dir={${EXCLUDE_DIR}}"
     printf "${RED}b) Java LIT Vocab Term versions:${NORMAL}\n"
     echo $command | bash | sed 's/\s*litVocabTermVersion: //' | column -s ':' -t
     echo ""
@@ -90,7 +92,7 @@ fi
 if [ "${litVocabTermJavaScript:-}" ]
 then
     # JavaScript LIT Vocab Term versions.
-    command="grep -r \"litVocabTermVersion:\s*\\\"\^\" ${TARGET_DIR} --include=*.{yml,yaml} --exclude-dir={Generated,node_modules,.github}"
+    command="grep -r \"litVocabTermVersion:\s*\\\"\^\" ${TARGET_DIR} --include=${INCLUDE_MASK} --exclude-dir={${EXCLUDE_DIR}}"
     printf "${RED}c) JavaScript LIT Vocab Term versions:${NORMAL}\n"
     echo $command | bash | sed 's/\s*litVocabTermVersion: //' | column -s ':' -t
     echo ""
@@ -99,7 +101,7 @@ fi
 if [ "${artifactJava:-}" ]
 then
     # Java generated artifact versions.
-    command="grep -r \"artifactVersion:\s*[0-9]\" ${TARGET_DIR} --include=*.{yml,yaml} --exclude-dir={Generated,node_modules,.github}"
+    command="grep -r \"artifactVersion:\s*[0-9]\" ${TARGET_DIR} --include=${INCLUDE_MASK} --exclude-dir={${EXCLUDE_DIR}}"
     printf "${RED}d) Generated Java JAR versions:${NORMAL}\n"
     echo $command | bash | sed 's/\s*artifactVersion: //' | column -s ':' -t
     echo ""
@@ -108,7 +110,7 @@ fi
 if [ "${artifactJavaScript:-}" ]
 then
     # JavaScript generated artifact versions.
-    command="grep -r \"artifactVersion:\s*\\\"\" ${TARGET_DIR} --include=*.{yml,yaml} --exclude-dir={Generated,node_modules,.github}"
+    command="grep -r \"artifactVersion:\s*\\\"\" ${TARGET_DIR} --include=${INCLUDE_MASK} --exclude-dir={${EXCLUDE_DIR}}"
     printf "${RED}e) Generated JavaScript NPM versions:${NORMAL}\n"
     echo $command | bash | sed 's/\s*artifactVersion: //' | column -s ':' -t
     echo ""
