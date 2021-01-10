@@ -16,7 +16,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 source ${SCRIPT_DIR}/run_command.sh
 
 STARTING_DIR="${PWD}"
-DEFAULT_TARGET_DIR="src/LitVocab"
+DEFAULT_TARGET_DIR="src/SolidCommonVocab"
 TARGET_DIR="${PWD}/${DEFAULT_TARGET_DIR}"
 BINARY_DIR="/Bin"
 VOCAB_DIR="/Vocab"
@@ -90,7 +90,7 @@ fi
 # locally generated copy.
 if [ ${VOCAB_LOCAL} == true ]
 then
-    printf "\n${GREEN}Fetching LIT Artifact Generator into directory [${TARGET_DIR}]...${NORMAL}\n"
+    printf "\n${GREEN}Fetching Artifact Generator into directory [${TARGET_DIR}]...${NORMAL}\n"
     run_command "${SCRIPT_DIR}/fetchLag.sh -t ${TARGET_DIR}${BINARY_DIR}"
 
     printf "\n${GREEN}Fetching vocabulary repository [${GIT_REPO_URL}] into directory [${TARGET_DIR}${VOCAB_DIR}]...${NORMAL}\n"

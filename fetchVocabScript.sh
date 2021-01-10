@@ -14,7 +14,7 @@ NORMAL=$(tput sgr0)
 # Get the directory this script itself is located in.
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 STARTING_DIR="${PWD}"
-DEFAULT_TARGET_DIR="src/LitVocab"
+DEFAULT_TARGET_DIR="src/SolidCommonVocab"
 TARGET_DIR="${PWD}/${DEFAULT_TARGET_DIR}"
 GIT_REPO_NAME="lit-vocab-script"
 GIT_REPO_URL="git@github.com:inrupt/${GIT_REPO_NAME}.git"
@@ -58,7 +58,7 @@ function run_command {
 
 helpFunction() {
     printf "${BLUE}Usage: $0 [ -t TargetDirectory ] [ -b GitBranch ]\n"
-    printf "Clones the LIT Vocab Script repository (with an optional branch, default is [${YELLOW}${GIT_BRANCH}${BLUE}]) into the specified target directory (default is [${YELLOW}${DEFAULT_TARGET_DIR}${BLUE}]).${NORMAL}\n"
+    printf "Clones the Vocab Script repository (with an optional branch, default is [${YELLOW}${GIT_BRANCH}${BLUE}]) into the specified target directory (default is [${YELLOW}${DEFAULT_TARGET_DIR}${BLUE}]).${NORMAL}\n"
     printf "${BLUE}Options:${NORMAL}\n"
     printf "\t-t ${YELLOW}Optional: ${BLUE}target directory (default is: [${YELLOW}${DEFAULT_TARGET_DIR}${BLUE}])${NORMAL}\n\n"
     printf "\t-b ${YELLOW}Optional: ${BLUE}Git branch (default is: [${YELLOW}${GIT_BRANCH}${BLUE}])${NORMAL}\n\n"
@@ -83,18 +83,18 @@ FULL_REPO_DIR="${TARGET_DIR}/${GIT_REPO_NAME}"
 
 if [ -d "${FULL_REPO_DIR}" ]
 then
-    printf "${GREEN}Found LIT Vocab Script repository locally in [${FULL_REPO_DIR}] - ensuring branch [${GIT_BRANCH}] is up-to-date...${NORMAL}\n"
+    printf "${GREEN}Found Vocab Script repository locally in [${FULL_REPO_DIR}] - ensuring branch [${GIT_BRANCH}] is up-to-date...${NORMAL}\n"
     run_command "cd ${FULL_REPO_DIR}"
     run_command "git checkout ${GIT_BRANCH}"
     run_command "git fetch"
 
     run_command "git rebase origin/${GIT_BRANCH}"
-    printf "\n${GREEN}Successully updated LIT Vocab Script repo [${GIT_REPO_NAME}], branch [${GIT_BRANCH}] into directory: [${FULL_REPO_DIR}].${NORMAL}\n"
+    printf "\n${GREEN}Successully updated Vocab Script repo [${GIT_REPO_NAME}], branch [${GIT_BRANCH}] into directory: [${FULL_REPO_DIR}].${NORMAL}\n"
 else
-    printf "${GREEN}Didn't find LIT Vocab Script repository locally [${FULL_REPO_DIR}] - cloning it into directory [${TARGET_DIR}]...${NORMAL}\n"
+    printf "${GREEN}Didn't find Vocab Script repository locally [${FULL_REPO_DIR}] - cloning it into directory [${TARGET_DIR}]...${NORMAL}\n"
     run_command "mkdir -p ${TARGET_DIR}"
     run_command "cd ${TARGET_DIR}"
 
     run_command "git clone -b ${GIT_BRANCH} ${GIT_REPO_URL}"
-    printf "\n${GREEN}Successully updated LIT Vocab Script repo [${GIT_REPO_NAME}], branch [${GIT_BRANCH}]  into directory: [${FULL_REPO_DIR}].${NORMAL}\n"
+    printf "\n${GREEN}Successully updated Vocab Script repo [${GIT_REPO_NAME}], branch [${GIT_BRANCH}]  into directory: [${FULL_REPO_DIR}].${NORMAL}\n"
 fi

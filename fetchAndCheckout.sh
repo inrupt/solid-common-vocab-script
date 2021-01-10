@@ -26,7 +26,7 @@ then
     exit 1 # Exit script after printing help.
 fi
 
-printf "Fetching latest MASTER, and checking out: $1...\n"
+printf "Fetching latest MASTER, and checking out branch: $1...\n"
 run_command "git checkout master"
 run_command "git fetch"
 run_command "git rebase origin/master"

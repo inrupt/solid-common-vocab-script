@@ -1,0 +1,10 @@
+# In case publishing script is run from within this repo, we ignore the default
+# target generation directory.
+src/SolidCommonVocab
+
+# IntelliJ IDE.
+.idea
+*.iml
+
+# VS Code IDE.
+/.vscode
