@@ -27,7 +27,7 @@ VOCAB_CONFIG_DIR="${SCRIPT_DIR}"
 # This default target directory is assuming we are running this script from
 # within an application from which we've been making local updates to RDF
 # vocabularies that we've cloned into the same place.
-DEFAULT_TARGET_DIR="src/LitVocab"
+DEFAULT_TARGET_DIR="src/SolidCommonVocab"
 TARGET_DIR="${PWD}/${DEFAULT_TARGET_DIR}"
 
 # The One-Time-Password value to use for NPM (to satisfy 2FA)

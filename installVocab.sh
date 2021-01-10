@@ -16,7 +16,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 source ${SCRIPT_DIR}/run_command.sh
 
 STARTING_DIR="${PWD}"
-DEFAULT_TARGET_DIR="src/LitVocab"
+DEFAULT_TARGET_DIR="src/SolidCommonVocab"
 TARGET_DIR="${PWD}/${DEFAULT_TARGET_DIR}"
 BINARY_DIR="/Bin"
 VOCAB_DIR="/Vocab"

@@ -13,7 +13,7 @@ NORMAL=$(tput sgr0)
 
 # Get the directory this script itself is located in.
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-DEFAULT_TARGET_DIR="src/LitVocab"
+DEFAULT_TARGET_DIR="src/SolidCommonVocab"
 TARGET_DIR="${PWD}/${DEFAULT_TARGET_DIR}"
 BINARY_DIR="/Bin"
 VOCAB_DIR="/Vocab"
