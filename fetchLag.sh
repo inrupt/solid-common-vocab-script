@@ -27,7 +27,7 @@ source ${SCRIPT_DIR}/run_command.sh
 
 helpFunction() {
     printf "${BLUE}Usage: $0 [ -t TargetDirectory ] [ -b GitBranch ]\n"
-    printf "Fetchs the LIT Artifact Generator (with optional Git branch) into the target directory.${NORMAL}\n"
+    printf "Fetchs the Artifact Generator (with optional Git branch) into the target directory.${NORMAL}\n"
     printf "${BLUE}Options:${NORMAL}\n"
     printf "\t-t ${YELLOW}Optional: ${BLUE}Target directory (default is: [${YELLOW}${TARGET_DIR}${BLUE}])${NORMAL}\n"
     printf "\t-b ${YELLOW}Optional: ${BLUE}Git branch (default is: [${YELLOW}${GIT_BRANCH}${BLUE}])${NORMAL}\n\n"
@@ -55,13 +55,13 @@ LAG_DIR="${TARGET_DIR}/lit-artifact-generator"
 
 if [ -d "${LAG_DIR}" ]
 then
-    printf "${GREEN}Found LIT Artifact Generator locally in [${LAG_DIR}] - ensuring branch [${GIT_BRANCH}] is up-to-date...${NORMAL}\n"
+    printf "${GREEN}Found Artifact Generator locally in [${LAG_DIR}] - ensuring branch [${GIT_BRANCH}] is up-to-date...${NORMAL}\n"
     run_command "cd ${LAG_DIR}"
     run_command "git checkout ${GIT_BRANCH}"
     run_command "git fetch"
     run_command "git rebase origin/${GIT_BRANCH}"
 else
-    printf "${GREEN}Didn't find LIT Artifact Generator locally [${LAG_DIR}] - cloning it into directory [${TARGET_DIR}]...${NORMAL}\n"
+    printf "${GREEN}Didn't find Artifact Generator locally [${LAG_DIR}] - cloning it into directory [${TARGET_DIR}]...${NORMAL}\n"
     run_command "mkdir -p ${TARGET_DIR}"
     run_command "cd ${TARGET_DIR}"
     run_command "git clone -b ${GIT_BRANCH} ${GIT_REPOSITORY_URL}${GIT_VERSION_TAG}"
@@ -71,8 +71,8 @@ else
     run_command "cd ${LOCAL_REPOSITORY_DIR}"
 fi
 
-printf "\n${GREEN}Running 'npm ci' on the latest LIT Artifact Generator in directory: [${TARGET_DIR}]...${NORMAL}\n"
+printf "\n${GREEN}Running 'npm ci' on the latest Artifact Generator in directory: [${TARGET_DIR}]...${NORMAL}\n"
 run_command "npm ci"
 run_command "cd ${STARTING_DIR}"
 
-printf "\n${GREEN}Successully updated to the latest LIT Artifact Generator in directory: [${TARGET_DIR}].${NORMAL}\n"
+printf "\n${GREEN}Successully updated to the latest Artifact Generator in directory: [${TARGET_DIR}].${NORMAL}\n"

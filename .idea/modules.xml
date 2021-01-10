@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/lit-vocab-script.iml" filepath="$PROJECT_DIR$/lit-vocab-script.iml" />
+      <module fileurl="file://$PROJECT_DIR$/solid-common-vocab-script.iml" filepath="$PROJECT_DIR$/solid-common-vocab-script.iml" />
     </modules>
   </component>
 </project>

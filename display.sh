@@ -20,22 +20,22 @@ EXCLUDE_DIR="bin,Generated,node_modules,.github"
 
 helpFunction() {
     printf "${BLUE}Usage: $0 [ -t <TargetDirectory> ] [ -a <LAG versions> | -b <Java-LVT versions> | -c <JavaScript_LVT versions> | -d <Generated Java versions> | -e <Generated JavaScript versions> ]\n"
-    printf "Displays version numbers being used across LIT Artifact Generator configuration files.${NORMAL}\n"
-    printf "${RED}NOTE: Also displays version numbers from commented-out entries, which will be prefixed with a hash '#'.${NORMAL}\n\n"
+    printf "Displays version numbers being used across Artifact Generator configuration files.${NORMAL}\n"
+    printf "${YELLOW}Note: Also displays version numbers from commented-out entries, which will be prefixed with a hash '#'.${NORMAL}\n\n"
     printf "${BLUE}Options:${NORMAL}\n"
     printf "\t-t ${YELLOW}Optional: ${BLUE}Target directory (default is: [${TARGET_DIR}])${NORMAL}\n"
-    printf "\t-a ${BLUE}LIT Artifact Generator versions${NORMAL}\n"
-    printf "\t-b ${BLUE}Solid Common Vocab Java versions${NORMAL}\n"
-    printf "\t-c ${BLUE}Solid Common Vocab JavaScript versions${NORMAL}\n"
-    printf "\t-d ${BLUE}Generated Java JAR versions${NORMAL}\n"
-    printf "\t-e ${BLUE}Generated JavaScript NPM versions${NORMAL}\n\n"
+    printf "\t-a ${YELLOW}Optional: ${BLUE}Artifact Generator versions${NORMAL}\n"
+    printf "\t-b ${YELLOW}Optional: ${BLUE}Solid Common Vocab Java versions${NORMAL}\n"
+    printf "\t-c ${YELLOW}Optional: ${BLUE}Solid Common Vocab JavaScript versions${NORMAL}\n"
+    printf "\t-d ${YELLOW}Optional: ${BLUE}Generated Java JAR versions${NORMAL}\n"
+    printf "\t-e ${YELLOW}Optional: ${BLUE}Generated JavaScript NPM versions${NORMAL}\n\n"
 }
 
 while getopts ":t:abcde" opt
 do
     case "$opt" in
       t ) TARGET_DIR="$OPTARG" ;;
-      a ) litArtifactGenerator=true ;;
+      a ) artifactGenerator=true ;;
       b ) litVocabTermJava=true ;;
       c ) litVocabTermJavaScript=true ;;
       d ) artifactJava=true ;;
@@ -51,16 +51,16 @@ then
 fi
 
 # Print help in case parameters are empty, but display everything.
-if [ "${litArtifactGenerator:-}" == "" ] \
+if [ "${artifactGenerator:-}" == "" ] \
   && [ "${litVocabTermJava:-}" == "" ] \
   && [ "${litVocabTermJavaScript:-}" == "" ] \
   && [ "${artifactJava:-}" == "" ] \
   && [ "${artifactJavaScript:-}" == "" ]
 then
-    echo "${RED}No specific options - displaying all!${NORMAL}";
+    echo "${RED}No specific options specified, so displaying everything.${NORMAL}";
     helpFunction
 
-    litArtifactGenerator=true;
+    artifactGenerator=true;
     litVocabTermJava=true;
     artifactJava=true;
     litVocabTermJavaScript=true;
@@ -69,13 +69,13 @@ fi
 
 printf "${BLUE}Displaying versions from YAML files found within target directory: [${TARGET_DIR}]${NORMAL}\n\n"
 
-if [ "${litArtifactGenerator:-}" ]
+if [ "${artifactGenerator:-}" ]
 then
-    # LIT Artifact Generator.
+    # Artifact Generator.
     # Alternative is to use 'find' first, but grep can handle what we need.
     #  command="find . -type f \( -name '*.yml' -o -name '*.yaml' \) -not -path \"*/Generated/*\" -exec grep \"artifactGeneratorVersion:\" {} +"
     command="grep -r \"artifactGeneratorVersion:\" ${TARGET_DIR} --include=${INCLUDE_MASK} --exclude-dir={${EXCLUDE_DIR}}"
-    printf "${RED}a) LIT Artifact Generator versions:${NORMAL}\n"
+    printf "${RED}a) Artifact Generator versions:${NORMAL}\n"
     echo $command | bash | sed 's/\s*artifactGeneratorVersion: //' | column -s ':' -t
     echo ""
 fi

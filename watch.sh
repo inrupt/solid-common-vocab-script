@@ -28,7 +28,7 @@ helpFunction() {
     printf "\t-t ${YELLOW}Optional: ${BLUE}Target directory (default is: [${TARGET_DIR}])${NORMAL}\n"
     printf "\t-r ${YELLOW}Optional: ${BLUE}Repository directory (default is: [${REPO_DIR}])${NORMAL}\n"
     printf "\t-g ${YELLOW}Optional: ${BLUE}Generated directory (default is: [${GENERATED_DIR}])${NORMAL}\n"
-    printf "${BLUE}Executes the LIT Artifact Generator to watch all RDF vocabularies referenced in all the YAML files found within the RepositoryDirectory inside the TargetDirectory, and generate source-code into the GeneratedDirectory.${NORMAL}\n"
+    printf "${BLUE}Executes the Artifact Generator to watch all RDF vocabularies referenced in all the YAML files found within the RepositoryDirectory inside the TargetDirectory, and generate source-code into the GeneratedDirectory.${NORMAL}\n"
     printf "${YELLOW}Current working directory: [${PWD}]${NORMAL}\n"
     printf "${YELLOW}Script directory: [${SCRIPT_DIR}]${NORMAL}\n\n"
     printf "${RED}Current working directory: [${PWD}]${NORMAL}\n"

@@ -90,7 +90,7 @@ fi
 # locally generated copy.
 if [ ${VOCAB_LOCAL} == true ]
 then
-    printf "\n${GREEN}Fetching LIT Artifact Generator into directory [${TARGET_DIR}]...${NORMAL}\n"
+    printf "\n${GREEN}Fetching Artifact Generator into directory [${TARGET_DIR}]...${NORMAL}\n"
     run_command "${SCRIPT_DIR}/fetchLag.sh -t ${TARGET_DIR}${BINARY_DIR}"
 
     printf "\n${GREEN}Fetching vocabulary repository [${GIT_REPO_URL}] into directory [${TARGET_DIR}${VOCAB_DIR}]...${NORMAL}\n"
