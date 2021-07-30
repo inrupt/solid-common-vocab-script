@@ -54,4 +54,4 @@ fi
 
 #run_command "${SCRIPT_DIR}/fetchLag.sh"
 
-node ${TARGET_DIR}${BINARY_DIR}/lit-artifact-generator/index.js watch --vocabListFile ${TARGET_DIR}${VOCAB_DIR}/${REPO_DIR}/**/*.yml --outputDirectory ${GENERATED_DIR}
+node ${TARGET_DIR}${BINARY_DIR}/artifact-generator/index.js watch --vocabListFile ${TARGET_DIR}${VOCAB_DIR}/${REPO_DIR}/**/*.yml --outputDirectory ${GENERATED_DIR}

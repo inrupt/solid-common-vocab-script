@@ -16,7 +16,7 @@ source ./run_command.sh
 helpFunction()
 {
     echo ""
-    echo "${BLUE}Usage: $0 <Feature label to checkout>, e.g. $0 feat/latest-java-lit-vocab-term${NORMAL}"
+    echo "${BLUE}Usage: $0 <Feature label to checkout>, e.g. $0 feat/latest-java-vocab-term${NORMAL}"
 }
 
 

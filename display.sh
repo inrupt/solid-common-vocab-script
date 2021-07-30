@@ -19,7 +19,7 @@ INCLUDE_MASK="*.{yml,yaml}"
 EXCLUDE_DIR="bin,Generated,node_modules,.github"
 
 helpFunction() {
-    printf "${BLUE}Usage: $0 [ -t <TargetDirectory> ] [ -a <LAG versions> | -b <Java-LVT versions> | -c <JavaScript_LVT versions> | -d <Generated Java versions> | -e <Generated JavaScript versions> ]\n"
+    printf "${BLUE}Usage: $0 [ -t <TargetDirectory> ] [ -a <AG versions> | -b <Java-LVT versions> | -c <JavaScript_LVT versions> | -d <Generated Java versions> | -e <Generated JavaScript versions> ]\n"
     printf "Displays version numbers being used across Artifact Generator configuration files.${NORMAL}\n"
     printf "${YELLOW}Note: Also displays version numbers from commented-out entries, which will be prefixed with a hash '#'.${NORMAL}\n\n"
     printf "${BLUE}Options:${NORMAL}\n"
@@ -36,8 +36,8 @@ do
     case "$opt" in
       t ) TARGET_DIR="$OPTARG" ;;
       a ) artifactGenerator=true ;;
-      b ) litVocabTermJava=true ;;
-      c ) litVocabTermJavaScript=true ;;
+      b ) solidCommonVocabTermJava=true ;;
+      c ) solidCommonVocabTermJavaScript=true ;;
       d ) artifactJava=true ;;
       e ) artifactJavaScript=true ;;
       ? ) helpFunction ;; # Print help in case parameter is non-existent
@@ -52,8 +52,8 @@ fi
 
 # Print help in case parameters are empty, but display everything.
 if [ "${artifactGenerator:-}" == "" ] \
-  && [ "${litVocabTermJava:-}" == "" ] \
-  && [ "${litVocabTermJavaScript:-}" == "" ] \
+  && [ "${solidCommonVocabTermJava:-}" == "" ] \
+  && [ "${solidCommonVocabTermJavaScript:-}" == "" ] \
   && [ "${artifactJava:-}" == "" ] \
   && [ "${artifactJavaScript:-}" == "" ]
 then
@@ -61,9 +61,9 @@ then
     helpFunction
 
     artifactGenerator=true;
-    litVocabTermJava=true;
+    solidCommonVocabTermJava=true;
     artifactJava=true;
-    litVocabTermJavaScript=true;
+    solidCommonVocabTermJavaScript=true;
     artifactJavaScript=true;
 fi
 
@@ -80,7 +80,7 @@ then
     echo ""
 fi
 
-if [ "${litVocabTermJava:-}" ]
+if [ "${solidCommonVocabTermJava:-}" ]
 then
     # Java Solid Common Vocab versions.
     command="grep -r \"solidCommonVocabVersion:\s*[0-9]\" ${TARGET_DIR} --include=${INCLUDE_MASK} --exclude-dir={${EXCLUDE_DIR}}"
@@ -89,7 +89,7 @@ then
     echo ""
 fi
 
-if [ "${litVocabTermJavaScript:-}" ]
+if [ "${solidCommonVocabTermJavaScript:-}" ]
 then
     # JavaScript Solid Common Vocab versions.
     command="grep -r \"solidCommonVocabVersion:\s*\\\"\^\" ${TARGET_DIR} --include=${INCLUDE_MASK} --exclude-dir={${EXCLUDE_DIR}}"

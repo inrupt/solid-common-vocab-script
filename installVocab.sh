@@ -31,8 +31,8 @@ helpFunction() {
     printf "${YELLOW}Usage: $0 -r <RepositoryToClone> -m <VocabModule> [ -i <InternalModuleDirectoryInRepo>] [ -t <TargetDirectory> ] [ -p <ProgrammingLanguage> ] [ -l | -r ]\n"
     printf "Installs the provided vocabulary module locally (i.e. clones the module inside this project), or remotely (publishing any local changes).${NORMAL}\n"
     printf "${BLUE}Options:${NORMAL}\n"
-    printf "\t-r ${BLUE}Repository to clone (e.g. git@github.com:inrupt/lit-vocab.git)${NORMAL}\n\n"
-    printf "\t-m ${BLUE}Module to extract (may contain a bundle of vocabularies, e.g. @inrupt/lit-generated-vocab-common)${NORMAL}\n"
+    printf "\t-r ${BLUE}Repository to clone (e.g. git@github.com:inrupt/solid-common-vocab-rdf.git)${NORMAL}\n\n"
+    printf "\t-m ${BLUE}Module to extract (may contain a bundle of vocabularies, e.g. @inrupt/vocab-common)${NORMAL}\n"
     printf "\t-i ${YELLOW}Optional: ${BLUE}Internal vocab location (e.g. inrupt-rdf-vocab/UIComponent) (default is: [${VOCAB_INTERNAL_LOCATION}]${NORMAL}\n"
     printf "\t-t ${YELLOW}Optional: ${BLUE}target directory (default is: [${YELLOW}${TARGET_DIR}${BLUE}])${NORMAL}\n"
     printf "\t-p ${YELLOW}Optional: ${BLUE}programming language (default is: [${YELLOW}${PROGRAMMING_LANGUAGE}${BLUE}])${NORMAL}\n"
@@ -84,8 +84,8 @@ else
     printf "${GREEN}Vocab module [$VOCAB_MODULE] not found in local 'package.json' file, so no need to uninstall it first.${NORMAL}\n"
 fi
 
-# If a local install, then we need to fetch the LAG, then clone the repository
-# containing the module we actually want, use the LAG to generate artifacts
+# If a local install, then we need to fetch the AG, then clone the repository
+# containing the module we actually want, use the AG to generate artifacts
 # locally, and then NPM install the actual module we want referencing the
 # locally generated copy.
 if [ ${VOCAB_LOCAL} == true ]
@@ -112,21 +112,21 @@ then
     # Therefore all our generated source-code also lives in sub-directories
     # under a common root directory.
     # If we wanted our source-code generated in s sub-directory alongside each
-    # YAML file we find, we'd have to update the LAG first.
+    # YAML file we find, we'd have to update the AG first.
     printf "\n${GREEN}Generating source-code artifacts from Git repo [${REPO_DIR}] in directory [${FULL_REPO_DIR}] into [${GENERATED_DIR}]...${NORMAL}\n"
-    # If the LAG is globally installed, you can just use this:
-#    lit-artifact-generator/index.js \
+    # If the AG is globally installed, you can just use this:
+    #    artifact-generator/index.js \
 
-    # If the LAG is locally installed outside the current directory, you can
+    # If the AG is locally installed outside the current directory, you can
     # just use this:
-#    node <PATH TO LAG>/index.js \
+    #    node <PATH TO AG>/index.js \
 
-    # If the LAG was cloned locally, you can just use this:
-    node ${TARGET_DIR}${BINARY_DIR}/lit-artifact-generator/index.js \
+    # If the AG was cloned locally, you can just use this:
+    node ${TARGET_DIR}${BINARY_DIR}/artifact-generator/index.js \
       generate \
       --outputDirectory "${GENERATED_DIR}" \
       --vocabListFile "${FULL_REPO_DIR}/**/*.yml" \
-      --vocabListFileIgnore "${FULL_REPO_DIR}/lit-artifact-generator/**" \
+      --vocabListFileIgnore "${FULL_REPO_DIR}/artifact-generator/**" \
       --noprompt
 
     FULL_LOCAL_VOCAB=${GENERATED_DIR}/${VOCAB_INTERNAL_LOCATION}/Generated/SourceCodeArtifacts/${PROGRAMMING_LANGUAGE}
@@ -142,7 +142,7 @@ then
     run_command "rm -rf ${FULL_LOCAL_VOCAB}/node_modules"
 
     # Generate a simple script to allow the user easily re-run just the watcher
-    # without having to rerun fetching the LAG or the vocab repo, or
+    # without having to rerun fetching the AG or the vocab repo, or
     # re-generating, etc...
     WATCH_REPO_SCRIPT_FILE="./watch-${REPO_DIR}.sh"
     if [ ! -d "${WATCH_REPO_SCRIPT_FILE}" ]
@@ -157,7 +157,7 @@ then
     printf "\n${GREEN}Watching vocabulary bundles under directory [${TARGET_DIR}${VOCAB_DIR}/${REPO_DIR}], generating to [${GENERATED_DIR}]...${NORMAL}\n"
     run_command "${SCRIPT_DIR}/watch.sh -t ${TARGET_DIR} -r ${REPO_DIR} -g ${GENERATED_DIR}"
     # The watch script really just runs this:
-    #   node ${TARGET_DIR}/lit-artifact-generator/index.js watch --vocabListFile ${TARGET_DIR}/${REPO_DIR}/**/*.yml --outputDirectory ${GENERATED_DIR}
+    #   node ${TARGET_DIR}/artifact-generator/index.js watch --vocabListFile ${TARGET_DIR}/${REPO_DIR}/**/*.yml --outputDirectory ${GENERATED_DIR}
 else
     INSTALL=${VOCAB_MODULE}
     printf "\n${GREEN}Installing REMOTE dependency as [${INSTALL}]...${NORMAL}\n"
