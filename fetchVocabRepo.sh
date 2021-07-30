@@ -25,7 +25,7 @@ helpFunction() {
     printf "${BLUE}Usage: $0 -r <RepositoryToClone> [ -t TargetDirectory ] [ -b GitBranch ]\n"
     printf "Clones the specified repository (with an optional branch, default is [${YELLOW}${GIT_BRANCH}${BLUE}]) into the specified target directory (default is [${YELLOW}${DEFAULT_TARGET_DIR}${BLUE}]).${NORMAL}\n"
     printf "${BLUE}Options:${NORMAL}\n"
-    printf "\t-r ${BLUE}Repository to clone (e.g. git@github.com:inrupt/lit-vocab.git)${NORMAL}\n\n"
+    printf "\t-r ${BLUE}Repository to clone (e.g. git@github.com:inrupt/solid-common-vocab-rdf.git)${NORMAL}\n\n"
     printf "\t-t ${YELLOW}Optional: ${BLUE}target directory (default is: [${YELLOW}${DEFAULT_TARGET_DIR}${BLUE}])${NORMAL}\n\n"
     printf "\t-b ${YELLOW}Optional: ${BLUE}Git branch (default is: [${YELLOW}${GIT_BRANCH}${BLUE}])${NORMAL}\n\n"
     printf "${YELLOW}Current working directory: [${PWD}]${NORMAL}\n"

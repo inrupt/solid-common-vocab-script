@@ -16,7 +16,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 STARTING_DIR="${PWD}"
 DEFAULT_TARGET_DIR="src/SolidCommonVocab"
 TARGET_DIR="${PWD}/${DEFAULT_TARGET_DIR}"
-GIT_REPO_NAME="lit-vocab-script"
+GIT_REPO_NAME="solid-common-vocab-script"
 GIT_REPO_URL="git@github.com:inrupt/${GIT_REPO_NAME}.git"
 GIT_BRANCH="master"
 

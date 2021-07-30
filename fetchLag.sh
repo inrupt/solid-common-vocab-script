@@ -15,11 +15,11 @@ NORMAL=$(tput sgr0)
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 STARTING_DIR="${PWD}"
 
-# We default to installing the LAG in a sibling directory (that we explicitly
+# We default to installing the AG in a sibling directory (that we explicitly
 # add to our repo's .gitignore file) of this script directory.
 TARGET_DIR="${SCRIPT_DIR}/../bin"
 
-GIT_REPOSITORY_URL="git@github.com:inrupt/lit-artifact-generator.git"
+GIT_REPOSITORY_URL="git@github.com:inrupt/artifact-generator.git"
 GIT_BRANCH="master"
 GIT_VERSION_TAG=""
 
@@ -51,22 +51,22 @@ do
     esac
 done
 
-LAG_DIR="${TARGET_DIR}/lit-artifact-generator"
+AG_DIR="${TARGET_DIR}/artifact-generator"
 
-if [ -d "${LAG_DIR}" ]
+if [ -d "${AG_DIR}" ]
 then
-    printf "${GREEN}Found Artifact Generator locally in [${LAG_DIR}] - ensuring branch [${GIT_BRANCH}] is up-to-date...${NORMAL}\n"
-    run_command "cd ${LAG_DIR}"
+    printf "${GREEN}Found Artifact Generator locally in [${AG_DIR}] - ensuring branch [${GIT_BRANCH}] is up-to-date...${NORMAL}\n"
+    run_command "cd ${AG_DIR}"
     run_command "git checkout ${GIT_BRANCH}"
     run_command "git fetch"
     run_command "git rebase origin/${GIT_BRANCH}"
 else
-    printf "${GREEN}Didn't find Artifact Generator locally [${LAG_DIR}] - cloning it into directory [${TARGET_DIR}]...${NORMAL}\n"
+    printf "${GREEN}Didn't find Artifact Generator locally [${AG_DIR}] - cloning it into directory [${TARGET_DIR}]...${NORMAL}\n"
     run_command "mkdir -p ${TARGET_DIR}"
     run_command "cd ${TARGET_DIR}"
     run_command "git clone -b ${GIT_BRANCH} ${GIT_REPOSITORY_URL}${GIT_VERSION_TAG}"
 
-    # We could just use the 'LAG_DIR' variable here too,
+    # We could just use the 'AG_DIR' variable here too,
     LOCAL_REPOSITORY_DIR="$(echo ${GIT_REPOSITORY_URL} | sed 's/^.*\///' | sed 's/\..*$//')"
     run_command "cd ${LOCAL_REPOSITORY_DIR}"
 fi
