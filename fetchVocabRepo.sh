@@ -17,13 +17,13 @@ STARTING_DIR="${PWD}"
 DEFAULT_TARGET_DIR="src/SolidCommonVocab"
 TARGET_DIR="${PWD}/${DEFAULT_TARGET_DIR}"
 GIT_REPO_URL=""
-GIT_BRANCH="master"
+GIT_BRANCH="main"
 
 source ${SCRIPT_DIR}/run_command.sh
 
 helpFunction() {
     printf "${BLUE}Usage: $0 -r <RepositoryToClone> [ -t TargetDirectory ] [ -b GitBranch ]\n"
-    printf "Clones the specified repository (with an optional branch, default is [${YELLOW}${GIT_BRANCH}${BLUE}]) into the specified target directory (default is [${YELLOW}${DEFAULT_TARGET_DIR}${BLUE}]).${NORMAL}\n"
+    printf "Clones the specified repository (with an optional branch, default is [${YELLOW}${GIT_BRANCH}${BLUE}]) into the specified target directory (default is [${YELLOW}${DEFAULT_TARGET_DIR}${BLUE}]).${NORMAL}\n\n"
     printf "${BLUE}Options:${NORMAL}\n"
     printf "\t-r ${BLUE}Repository to clone (e.g. git@github.com:inrupt/solid-common-vocab-rdf.git)${NORMAL}\n\n"
     printf "\t-t ${YELLOW}Optional: ${BLUE}target directory (default is: [${YELLOW}${DEFAULT_TARGET_DIR}${BLUE}])${NORMAL}\n\n"

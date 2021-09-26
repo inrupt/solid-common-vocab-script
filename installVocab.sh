@@ -20,22 +20,23 @@ DEFAULT_TARGET_DIR="src/SolidCommonVocab"
 TARGET_DIR="${PWD}/${DEFAULT_TARGET_DIR}"
 BINARY_DIR="/Bin"
 VOCAB_DIR="/Vocab"
-PROGRAMMING_LANGUAGE=JavaScript
+PROGRAMMING_LANGUAGE=TypeScript
 
 VOCAB_LOCAL=false
 VOCAB_REMOTE=false
+IGNORE_ARTIFACT_GENERATOR_INSTALL=false
 VOCAB_INTERNAL_LOCATION=""
 
 helpFunction() {
-    echo ""
-    printf "${YELLOW}Usage: $0 -r <RepositoryToClone> -m <VocabModule> [ -i <InternalModuleDirectoryInRepo>] [ -t <TargetDirectory> ] [ -p <ProgrammingLanguage> ] [ -l | -r ]\n"
-    printf "Installs the provided vocabulary module locally (i.e. clones the module inside this project), or remotely (publishing any local changes).${NORMAL}\n"
+    printf "${BLUE}Usage: $0 -r <RepositoryToClone> -m <VocabModule> [ -i <InternalModuleDirectoryInRepo>] [ -t <TargetDirectory> ] [ -p <ProgrammingLanguage> ] [ -l | -r ]\n"
+    printf "Installs the provided vocabulary module locally (i.e. clones the module inside this project), or remotely (publishing any local changes).${NORMAL}\n\n"
     printf "${BLUE}Options:${NORMAL}\n"
     printf "\t-r ${BLUE}Repository to clone (e.g. git@github.com:inrupt/solid-common-vocab-rdf.git)${NORMAL}\n\n"
     printf "\t-m ${BLUE}Module to extract (may contain a bundle of vocabularies, e.g. @inrupt/vocab-common)${NORMAL}\n"
-    printf "\t-i ${YELLOW}Optional: ${BLUE}Internal vocab location (e.g. inrupt-rdf-vocab/UIComponent) (default is: [${VOCAB_INTERNAL_LOCATION}]${NORMAL}\n"
+    printf "\t-i ${YELLOW}Optional: ${BLUE}Internal vocab location (e.g. inrupt-rdf-vocab/UIComponent) (default is: [${YELLOW}${VOCAB_INTERNAL_LOCATION}${BLUE}])${NORMAL}\n"
     printf "\t-t ${YELLOW}Optional: ${BLUE}target directory (default is: [${YELLOW}${TARGET_DIR}${BLUE}])${NORMAL}\n"
     printf "\t-p ${YELLOW}Optional: ${BLUE}programming language (default is: [${YELLOW}${PROGRAMMING_LANGUAGE}${BLUE}])${NORMAL}\n"
+    printf "\t-x ${YELLOW}Optional: ${BLUE}Ignore Artifact Generator install or update (e.g., perhaps you have local changes) (default is: [${YELLOW}${IGNORE_ARTIFACT_GENERATOR_INSTALL}${BLUE}])${NORMAL}\n"
     printf "\t-l ${BLUE}Depend on module locally (e.g. to watch for local changes and apply them immediately)${NORMAL}\n"
     printf "\t-n ${BLUE}Depend on non-local module${NORMAL}\n\n"
     printf "${RED}Current working directory: [${PWD}]${NORMAL}\n"
@@ -43,7 +44,7 @@ helpFunction() {
     printf "${RED}Script directory: [${SCRIPT_DIR}]${NORMAL}\n"
 }
 
-while getopts ":r:m:i:t:p:ln" opt
+while getopts ":r:m:i:t:p:xln" opt
 do
     case "$opt" in
       r ) GIT_REPO_URL="$OPTARG" ;;
@@ -51,6 +52,7 @@ do
       i ) VOCAB_INTERNAL_LOCATION="$OPTARG" ;;
       t ) TARGET_DIR="$OPTARG" ;;
       p ) PROGRAMMING_LANGUAGE="$OPTARG" ;;
+      x ) IGNORE_ARTIFACT_GENERATOR_INSTALL=true ;;
       l ) VOCAB_LOCAL=true ;;
       n ) VOCAB_REMOTE=true ;;
       ? ) helpFunction ;; # Print help in case parameter is non-existent
@@ -90,8 +92,17 @@ fi
 # locally generated copy.
 if [ ${VOCAB_LOCAL} == true ]
 then
-    printf "\n${GREEN}Fetching Artifact Generator into directory [${TARGET_DIR}]...${NORMAL}\n"
-    run_command "${SCRIPT_DIR}/fetchLag.sh -t ${TARGET_DIR}${BINARY_DIR}"
+
+    # Perhaps we have a local install of the Artifact Generator already that contains local
+    # changes (for testing or something) that we don't want to commit - if don't ignore this it'll
+    # attempt to fetch the latest and fail due to the uncommitted local changes.
+    if [ ${IGNORE_ARTIFACT_GENERATOR_INSTALL} == true ]
+    then
+        printf "\n${RED}Ignoring fetching or updating the Artifact Generator in directory[${TARGET_DIR}].${NORMAL}\n"
+    else
+        printf "\n${GREEN}Fetching Artifact Generator into directory [${TARGET_DIR}]...${NORMAL}\n"
+        run_command "${SCRIPT_DIR}/fetchLag.sh -t ${TARGET_DIR}${BINARY_DIR}"
+    fi
 
     printf "\n${GREEN}Fetching vocabulary repository [${GIT_REPO_URL}] into directory [${TARGET_DIR}${VOCAB_DIR}]...${NORMAL}\n"
     run_command "${SCRIPT_DIR}/fetchVocabRepo.sh -r ${GIT_REPO_URL} -t ${TARGET_DIR}${VOCAB_DIR}"
@@ -122,12 +133,15 @@ then
     #    node <PATH TO AG>/index.js \
 
     # If the AG was cloned locally, you can just use this:
-    node ${TARGET_DIR}${BINARY_DIR}/artifact-generator/index.js \
+    if ! node ${TARGET_DIR}${BINARY_DIR}/artifact-generator/index.js \
       generate \
       --outputDirectory "${GENERATED_DIR}" \
       --vocabListFile "${FULL_REPO_DIR}/**/*.yml" \
       --vocabListFileIgnore "${FULL_REPO_DIR}/artifact-generator/**" \
-      --noprompt
+      --noprompt ; then
+        printf "\n${RED}Failed to run Artifact Generator against configuration files under directory [${FULL_REPO_DIR}].${NORMAL}\n"
+        exit 2
+    fi
 
     FULL_LOCAL_VOCAB=${GENERATED_DIR}/${VOCAB_INTERNAL_LOCATION}/Generated/SourceCodeArtifacts/${PROGRAMMING_LANGUAGE}
     INSTALL=${VOCAB_MODULE}@file://${FULL_LOCAL_VOCAB}
@@ -142,7 +156,7 @@ then
     run_command "rm -rf ${FULL_LOCAL_VOCAB}/node_modules"
 
     # Generate a simple script to allow the user easily re-run just the watcher
-    # without having to rerun fetching the AG or the vocab repo, or
+    # without having to re-run fetching the AG or the vocab repo, or
     # re-generating, etc...
     WATCH_REPO_SCRIPT_FILE="./watch-${REPO_DIR}.sh"
     if [ ! -d "${WATCH_REPO_SCRIPT_FILE}" ]

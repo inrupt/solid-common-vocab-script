@@ -16,10 +16,9 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 # Default directory to target is a sibling directory of where this script is.
 TARGET_DIR="${PWD}"
 
-helpFunction()
-{
-    echo ""
-    echo "${BLUE}Usage: $0 [ -t <TargetDirectory> | -a <... version> | -b <... version> | -c <... version> | -d <... version> | -e <... version> ]"
+helpFunction() {
+    printf "${BLUE}Usage: $0 [ -t <TargetDirectory> | -a <... version> | -b <... version> | -c <... version> | -d <... version> | -e <... version> ]\n"
+    printf "Updates the version numbers of pre-defined fields in Artifact Generator configuration files (recursivey looking for files from the <TargetDirectory>).${NORMAL}\n\n"
     printf "${BLUE}Options:${NORMAL}\n"
     printf "\t-t ${YELLOW}Optional: ${BLUE}Target directory (default is: [${TARGET_DIR}])${NORMAL}\n"
     printf "\t-a ${YELLOW}Optional: ${BLUE}Artifact Generator version${NORMAL}\n"
@@ -27,8 +26,14 @@ helpFunction()
     printf "\t-c ${YELLOW}Optional: ${BLUE}Solid Common Vocab JavaScript version${NORMAL}\n"
     printf "\t-d ${YELLOW}Optional: ${BLUE}Generated Java JAR version${NORMAL}\n"
     printf "\t-e ${YELLOW}Optional: ${BLUE}Generated JavaScript NPM version${NORMAL}\n\n"
-    exit 1 # Exit script after printing help
+    printf "${YELLOW}Default target directory: [${TARGET_DIR}]${NORMAL}\n"
 }
+
+if [ "${1:-}" == "?" ] || [ "${1:-}" == "-?" ] || [ "${1:-}" == "-h" ] || [ "${1:-}" == "--help" ]
+then
+    helpFunction
+    exit 1 # Exit script after printing help.
+fi
 
 while getopts "a:b:c:d:e:" opt
 do
@@ -41,12 +46,6 @@ do
       ? ) helpFunction ;; # Print help in case parameter is non-existent
     esac
 done
-
-if [ "${1:-}" == "?" ] || [ "${1:-}" == "-?" ] || [ "${1:-}" == "-h" ] || [ "${1:-}" == "--help" ]
-then
-    helpFunction
-    exit 1 # Exit script after printing help.
-fi
 
 # Print help in case parameters are empty.
 if [ "${1:-}" == "" ]

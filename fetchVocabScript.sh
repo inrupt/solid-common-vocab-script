@@ -18,7 +18,7 @@ DEFAULT_TARGET_DIR="src/SolidCommonVocab"
 TARGET_DIR="${PWD}/${DEFAULT_TARGET_DIR}"
 GIT_REPO_NAME="solid-common-vocab-script"
 GIT_REPO_URL="git@github.com:inrupt/${GIT_REPO_NAME}.git"
-GIT_BRANCH="master"
+GIT_BRANCH="main"
 
 # We copy this function here to allow us use this script in pure isolation from
 # anything else (i.e. so that we can drop this script into any application to
@@ -58,7 +58,7 @@ function run_command {
 
 helpFunction() {
     printf "${BLUE}Usage: $0 [ -t TargetDirectory ] [ -b GitBranch ]\n"
-    printf "Clones the Vocab Script repository (with an optional branch, default is [${YELLOW}${GIT_BRANCH}${BLUE}]) into the specified target directory (default is [${YELLOW}${DEFAULT_TARGET_DIR}${BLUE}]).${NORMAL}\n"
+    printf "Clones the Vocab Script repository (with an optional branch, default is [${YELLOW}${GIT_BRANCH}${BLUE}]) into the specified target directory (default is [${YELLOW}${DEFAULT_TARGET_DIR}${BLUE}]).${NORMAL}\n\n"
     printf "${BLUE}Options:${NORMAL}\n"
     printf "\t-t ${YELLOW}Optional: ${BLUE}target directory (default is: [${YELLOW}${DEFAULT_TARGET_DIR}${BLUE}])${NORMAL}\n\n"
     printf "\t-b ${YELLOW}Optional: ${BLUE}Git branch (default is: [${YELLOW}${GIT_BRANCH}${BLUE}])${NORMAL}\n\n"
