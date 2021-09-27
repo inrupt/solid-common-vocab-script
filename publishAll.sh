@@ -37,8 +37,8 @@ PUBLISH_LOCAL=false
 PUBLISH_REMOTE=false
 
 helpFunction() {
-    printf "Usage: $0 [ -t <TargetDirectory> ] [ -g <GeneratorDirectory> ] [ -v <VocabConfigRootDirectory> ] [ -l | -r ]\n"
-    printf "${BLUE}Executes the Artifact Generator to re-generate and publish artifacts from all YAML files found from here.${NORMAL}\n"
+    printf "${BLUE}Usage: $0 [ -t <TargetDirectory> ] [ -g <GeneratorDirectory> ] [ -v <VocabConfigRootDirectory> ] [ -l | -r ]\n"
+    printf "Executes the Artifact Generator to re-generate and publish artifacts from all YAML files found from here.${NORMAL}\n\n"
     printf "${BLUE}Options:${NORMAL}\n"
     printf "\t-t ${YELLOW}Optional: ${BLUE}Target directory (default is: [${TARGET_DIR}])${NORMAL}\n"
     printf "\t-g ${YELLOW}Optional: ${BLUE}Artifact Generator directory (default is: [${AG_DIR}])${NORMAL}\n"
@@ -47,6 +47,12 @@ helpFunction() {
     printf "\t-l ${BLUE}Publish locally${NORMAL}\n"
     printf "\t-r ${BLUE}Publish remotely${NORMAL}\n\n"
 }
+
+if [ "${1:-}" == "?" ] || [ "${1:-}" == "-?" ] || [ "${1:-}" == "-h" ] || [ "${1:-}" == "--help" ]
+then
+    helpFunction
+    exit 1 # Exit script after printing help.
+fi
 
 while getopts ":t:g:v:o:lr" opt
 do
@@ -60,12 +66,6 @@ do
       ? ) helpFunction ;; # Print help in case parameter is non-existent
     esac
 done
-
-if [ "${1:-}" == "?" ] || [ "${1:-}" == "-?" ] || [ "${1:-}" == "-h" ] || [ "${1:-}" == "--help" ]
-then
-    helpFunction
-    exit 1 # Exit script after printing help.
-fi
 
 if [ "${PUBLISH_LOCAL}" == false ] && [ "${PUBLISH_REMOTE}" == false ]
 then

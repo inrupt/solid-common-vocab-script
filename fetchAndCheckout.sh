@@ -15,8 +15,7 @@ source ./run_command.sh
 
 helpFunction()
 {
-    echo ""
-    echo "${BLUE}Usage: $0 <Feature label to checkout>, e.g. $0 feat/latest-java-vocab-term${NORMAL}"
+    printf "${BLUE}Usage: $0 <Feature label to checkout>, e.g. $0 feat/latest-java-vocab-term${NORMAL}"
 }
 
 
@@ -26,8 +25,8 @@ then
     exit 1 # Exit script after printing help.
 fi
 
-printf "Fetching latest MASTER, and checking out branch: $1...\n"
-run_command "git checkout master"
+printf "Fetching latest 'main', and checking out branch: $1...\n"
+run_command "git checkout main"
 run_command "git fetch"
-run_command "git rebase origin/master"
+run_command "git rebase origin/main"
 run_command "git checkout -b $1"

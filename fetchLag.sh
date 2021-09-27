@@ -20,14 +20,14 @@ STARTING_DIR="${PWD}"
 TARGET_DIR="${SCRIPT_DIR}/../bin"
 
 GIT_REPOSITORY_URL="git@github.com:inrupt/artifact-generator.git"
-GIT_BRANCH="master"
+GIT_BRANCH="main"
 GIT_VERSION_TAG=""
 
 source ${SCRIPT_DIR}/run_command.sh
 
 helpFunction() {
     printf "${BLUE}Usage: $0 [ -t TargetDirectory ] [ -b GitBranch ]\n"
-    printf "Fetchs the Artifact Generator (with optional Git branch) into the target directory.${NORMAL}\n"
+    printf "Fetches the Artifact Generator (with optional Git branch) into the target directory.${NORMAL}\n"
     printf "${BLUE}Options:${NORMAL}\n"
     printf "\t-t ${YELLOW}Optional: ${BLUE}Target directory (default is: [${YELLOW}${TARGET_DIR}${BLUE}])${NORMAL}\n"
     printf "\t-b ${YELLOW}Optional: ${BLUE}Git branch (default is: [${YELLOW}${GIT_BRANCH}${BLUE}])${NORMAL}\n\n"
